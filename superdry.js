@@ -13,7 +13,15 @@ db.query("INSERT INTO books (title, author) VALUES ($1, $2) RETURNING *",
 ["The Great Gatsby", "Fitzgerald"], function(err, resultSet){
   if (err) console.log("INSERT FAILED :-(", err);
   console.log(resultSet.rows);
+
+ db.query("UPDATE books SET author = 'Taco' WHERE author = 'Grass';", function(err, resultSet){
+  if (err) console.log("INSERT FAILED :-(", err);
+  console.log(resultSet.rows);
+
+db.query("DELETE FROM books WHERE title = 'The Great Gatsby';", function(err, resultSet){
+  if (err) console.log("INSERT FAILED :-(", err);
+  console.log(resultSet.rows);
+
 });
 
 db.end();
-
