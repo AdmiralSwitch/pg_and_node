@@ -11,9 +11,11 @@ db.config = {
 
 db.connect = function(buzzer) {
   pg.connect(db.config, function(err, client, done){
+    //if checks for connection errors
       if (err) {
            console.error("OOOPS!!! SOMETHING WENT WRONG!", err);
       }
+      //client is the connection to the database
       buzzer(client);
       done();
   });
@@ -36,5 +38,14 @@ db.query("INSERT INTO books (title, author) VALUES ($1, $2) RETURNING *",
 });
 
 // Excercise: add UPDATE and DELETE calls
+//UPDATE
+db.query("UPDATE books SET author = 'Taco' WHERE author = 'Grass';", function(err, resultSet){
+    if (err) console.log("SELECT FAILED :-(", err);
+});
+
+//DELETE
+db.query("DELETE FROM books WHERE title = 'The Great Gatsby';", function(err, resultSet){
+    if (err) console.log("SELECT FAILED :-(", err);
+});
 
 pg.end();
