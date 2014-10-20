@@ -21,59 +21,72 @@ app.get('/', function(req, res){
 app.get('/books', function(req, res){
   //DONE!
   console.log("/BOOKS")
-  var leBooks = library.all();
-  res.render('library/index', {allBooks: leBooks});
+  //the caller of library defines the buzzer
+  library.all(function(leBooks){
+      res.render('library/index', {allBooks: leBooks});
+  });
 });
 
-//New
+//New COMPLETE
 app.get('/books/new', function(req, res){
   //DONE
-	res.render("library/new");
+  library.all(function(leBooks){
+  	res.render("library/new");
+  });  
 });
 
-//Create
+//Create COMPLETE
 app.post('/books', function(req, res) {
-	//TODO
-  console.log("/books -> Implement me.");
-  // library.add ....
-  res.redirect('/books'); 
+  // console.log(req.body.book.title);
+  //^^ TEST for location of the title within the object
+  library.add(req.body.book.title, req.body.book.author, function() {
+    res.redirect('/books'); 
+    //^^redirect to books page ^^
+  });  
 });
 
-//Show
+
+//Show TODO
 app.get('/books/:id', function(req, res) {
   var id = req.params.id;
-  //TODO
-  console.log("/books -> Implement me.");
-  // library.findById ...
+  // console.log("/books -> Implement me.");
+    // console.log()
   // Add library/show.ejs page and render it with found book
   // Add "Show" link on '/books' page.
-  res.send("implement show book. showing book " + req.params.id);
+  res.render('./library/show');
+  // });
 });
 
-//Edit
+
+//Edit WIP
 app.get('/books/:id/edit', function(req, res) {
 	var id = req.params.id;
   //TODO
-  console.log("/books/:id/edit -> Implement me.");
-  // library.findById ...
-  var foundBook = {};
-  res.render('library/edit', {book: foundBook});
+  // console.log("/books/:id/edit -> Implement me.");
+  library.findById(id, function(x){
+    var foundBook = x;
+
+    res.render('library/edit', {book: foundBook});
+    // console.log({book:foundBook});
+  });
 });
 
-//Update
+//Update TODO
 app.put('/books/:id', function(req, res) {
 	var id = req.params.id;
   //TODO
-  console.log("/books/:id -> Implement me.");
-  // library.update ...
+  // console.log("/books/:id -> Implement me.");
+  // library.update(id, title, author, function(){
+  // });
   res.redirect('/books');
 });
 
-//Delete
+
+//Delete COMPLETE
 app.delete('/books/:id', function(req, res) {
 	var id = req.params.id;
-  //TODO
-  // library.destroy ...
+  library.destroy(id, function(){
+  });
   res.redirect('/books');
 });
 
